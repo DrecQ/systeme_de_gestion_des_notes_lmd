@@ -28,7 +28,26 @@ class UnitesEnseignementController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Validation des données des champs
+
+        $validate = $request->validate([
+            'code' => 'required | string | max:10 | unique:unites_enseignements',
+            'nom' => 'required | string | max:255',
+            'credits_ects' => 'required',
+            'semestre' => 'required'
+        ]);
+
+        //Creation des enregistrements 
+        UnitesEnseignement::create([
+            'code' => $validate['code'],
+            'nom' => $validate['nom'],
+            'credits_ects'=>$validate['credits_ects'],
+            'semestre' => $validate['semestre']
+        ]);
+
+        // dd($validate);
+
+        return  redirect()->back()->with('success', 'Enregistrement réussie');
     }
 
     /**
