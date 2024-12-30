@@ -28,7 +28,22 @@ class ElementsConstitutifsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $validate->$request->validate([
+            'code' => 'required | string | max:10 | unique:unites_enseignements',
+            'nom' => 'required | string | max:255',
+            'coefficient' => 'required | max : 10',
+            'ue_id' => 'required'
+        ]);
+
+        //Créer un enregistrement
+        ElementsConstitutifs::create([
+            'code' => $validate['code'],
+            'nom' => $validate['nom'],
+            'coefficient' => $validate['coefficient'],
+            'ue_id' => $validate['ue_id']
+
+        ]);
     }
 
     /**
