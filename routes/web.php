@@ -2,9 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\UnitesEnseignement;
+<<<<<<< HEAD
 use App\Models\ElementsConstitutifs;
 use App\Http\Controllers\UnitesEnseignementController;
 use App\Http\Controllers\ElementsConstitutifsController;
+=======
+use App\Http\Controllers\UnitesEnseignementController;
+>>>>>>> d08d2c863b479e058c7ad01d4acc97098e8df6c9
 
 Route::get('/', function () {
     return view('welcome');
@@ -16,6 +20,7 @@ Route::get('/ue', function () {
     return view('formulaireCreationUe');
 });
 
+<<<<<<< HEAD
 Route::post('/ue', [UnitesEnseignementController::class, 'store'])->name('insertionUe.store');
 
 //----------Routes pour les ECUes------------------------
@@ -31,3 +36,6 @@ Route::get('/listeUE',function(){
     return view('listeUnitesEnseignement');
 });
  Route::get('/listeUE',[UnitesEnseignementController::class, 'all'])->name('ue.liste');
+=======
+Route::post('/ue', [UnitesEnseignementController::class, 'store'])->name('insertionUe.store');
+>>>>>>> d08d2c863b479e058c7ad01d4acc97098e8df6c9
