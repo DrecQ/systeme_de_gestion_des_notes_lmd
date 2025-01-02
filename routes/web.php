@@ -31,7 +31,7 @@ Route::get('/ecu', function () {
 
 Route::post('/ecu', [ElementsConstitutifsController::class, 'store'])->name('insertionEcu.store');
 
-//--------------Affichage des ue et ecu 
+//--------------Affichage des ue
 Route::get('/listeUE',function(){
     return view('listeUnitesEnseignement');
 });
@@ -39,3 +39,5 @@ Route::get('/listeUE',function(){
 =======
 Route::post('/ue', [UnitesEnseignementController::class, 'store'])->name('insertionUe.store');
 >>>>>>> d08d2c863b479e058c7ad01d4acc97098e8df6c9
+//----------------Affichage des ecu
+Route::get('/ecu/{ue}', [ElementsConstitutifsController::class, 'index'])->name('ue_id');

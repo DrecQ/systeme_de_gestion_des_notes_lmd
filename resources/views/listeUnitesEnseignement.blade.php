@@ -24,7 +24,7 @@
                     <td class="py-3 px-4" >{{ $ue->nom }}</td>
                     <td class="py-3 px-4" >{{ $ue->credits_ects }}</td>
                     <td class="py-3 px-4" >{{ $ue->semestre }}</td>
-                    <td class="py-3 px-4"><a class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded" href="/ecu?$ue_id=$ue->id">Voir les ECUs</a></td>
+                    <td class="py-3 px-4"><a class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded" href="{{ route('ue_id', ['ue' => $ue->id]) }}">Voir les ECUs</a></td>
                     </tr>
                 @endforeach
             </tbody>

@@ -13,6 +13,7 @@ class ElementsConstitutifsController extends Controller
     public function index()
     {
         //
+        return view('formulaireCreationEcu');
     }
 
     /**
