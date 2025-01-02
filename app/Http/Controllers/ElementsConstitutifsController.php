@@ -3,79 +3,41 @@
 namespace App\Http\Controllers;
 
 use App\Models\ElementsConstitutifs;
+use App\Models\UnitesEnseignement;
 use Illuminate\Http\Request;
 
 class ElementsConstitutifsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
         return view('formulaireCreationEcu');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create($ue)
     {
-        //
+        $ue = UnitesEnseignement::find($ue);
+        if (!$ue) {
+            return redirect()->back()->with('error', 'Unité d\'enseignement non trouvée.');
+        }
+        return view('formulaireCreationEcu', compact('ue'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        
-        $validate->$request->validate([
-            'code' => 'required | string | max:10 | unique:unites_enseignements',
-            'nom' => 'required | string | max:255',
-            'coefficient' => 'required | max : 10',
-            'ue_id' => 'required'
+        $validate = $request->validate([
+            'code' => 'required|string|max:10|unique:elements_constitutifs',
+            'nom' => 'required|string|max:255',
+            'coefficient' => 'required|numeric|max:10',
+            'ue_id' => 'required|exists:unites_enseignements,id'
         ]);
 
-        //Créer un enregistrement
         ElementsConstitutifs::create([
             'code' => $validate['code'],
             'nom' => $validate['nom'],
             'coefficient' => $validate['coefficient'],
             'ue_id' => $validate['ue_id']
-
         ]);
-    }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(ElementsConstitutifs $elementsConstitutifs)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ElementsConstitutifs $elementsConstitutifs)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, ElementsConstitutifs $elementsConstitutifs)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ElementsConstitutifs $elementsConstitutifs)
-    {
-        //
+        return redirect()->route('ue.liste')->with('success', 'Élément constitutif ajouté avec succès.');
     }
 }

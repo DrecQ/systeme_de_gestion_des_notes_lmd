@@ -2,13 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\UnitesEnseignement;
-<<<<<<< HEAD
 use App\Models\ElementsConstitutifs;
 use App\Http\Controllers\UnitesEnseignementController;
 use App\Http\Controllers\ElementsConstitutifsController;
-=======
-use App\Http\Controllers\UnitesEnseignementController;
->>>>>>> d08d2c863b479e058c7ad01d4acc97098e8df6c9
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,10 +16,19 @@ Route::get('/ue', function () {
     return view('formulaireCreationUe');
 });
 
-<<<<<<< HEAD
+
+//--------------Affichage des UEs------------------------
+
+Route::get('/listeUE', function () {
+    return view('listeUnitesEnseignement');
+});
+
+Route::get('/listeUE', [UnitesEnseignementController::class, 'all'])->name('ue.liste');
+
+
 Route::post('/ue', [UnitesEnseignementController::class, 'store'])->name('insertionUe.store');
 
-//----------Routes pour les ECUes------------------------
+//----------Routes pour les ECUs------------------------
 
 Route::get('/ecu', function () {
     return view('formulaireCreationEcu');
@@ -31,13 +36,9 @@ Route::get('/ecu', function () {
 
 Route::post('/ecu', [ElementsConstitutifsController::class, 'store'])->name('insertionEcu.store');
 
-//--------------Affichage des ue
-Route::get('/listeUE',function(){
-    return view('listeUnitesEnseignement');
-});
- Route::get('/listeUE',[UnitesEnseignementController::class, 'all'])->name('ue.liste');
-=======
-Route::post('/ue', [UnitesEnseignementController::class, 'store'])->name('insertionUe.store');
->>>>>>> d08d2c863b479e058c7ad01d4acc97098e8df6c9
-//----------------Affichage des ecu
-Route::get('/ecu/{ue}', [ElementsConstitutifsController::class, 'index'])->name('ue_id');
+
+//----------------Affichage des ECUs------------------------
+
+Route::get('/ecu/{ue}', [ElementsConstitutifsController::class, 'create'])->name('ue_id');
+Route::post('/ecu/{ue}', [ElementsConstitutifsController::class, 'store'])->name('insertionEcu.store');
+
