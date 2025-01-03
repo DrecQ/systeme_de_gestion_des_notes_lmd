@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Note;
-use Illuminate\Http\Request;
+use App\Models\Etudiant;
+use App\Models\ElementsConstitutifs;
 
 class NoteController extends Controller
 {
@@ -20,7 +21,9 @@ class NoteController extends Controller
      */
     public function create()
     {
-        //
+        $ecs = EC::all(); // Récupère tous les ECs
+        $etudiants = Etudiant::all(); // Récupère tous les étudiants
+        return view('notes.create', compact('ecs', 'etudiants'));
     }
 
     /**
@@ -28,7 +31,17 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'etudiant_id' => 'required|exists:etudiants,id',
+            'ec_id' => 'required|exists:elements_constitutifs,id',
+            'note' => 'required|numeric|min:0|max:20',
+            'session' => 'required|in:normale,rattrapage',
+            'date_evaluation' => 'required|date',
+        ]);
+    
+        Note::create($request->all());
+    
+        return redirect()->route('notes.create')->with('success', 'Note ajoutée avec succès.');
     }
 
     /**

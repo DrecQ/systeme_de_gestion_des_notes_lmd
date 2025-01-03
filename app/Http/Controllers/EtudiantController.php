@@ -12,7 +12,8 @@ class EtudiantController extends Controller
      */
     public function index()
     {
-        //
+        $etudiants = Etudiant::all();
+        return view('etudiants.index', compact('etudiants'));
     }
 
     /**
@@ -20,7 +21,8 @@ class EtudiantController extends Controller
      */
     public function create()
     {
-        //
+        
+        return view('etudiants.create');
     }
 
     /**
@@ -28,7 +30,21 @@ class EtudiantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'numero_etudiant' => 'required|unique:etudiants,numero_etudiant',
+            'nom' => 'required|string|max:255',
+            'prenom' => 'required|string|max:255',
+            'niveau' => 'required|in:L1,L2,L3',
+        ]);
+
+        Etudiant::create([
+            'numero_etudiant' => $request->numero_etudiant,
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'niveau' => $request->niveau,
+        ]);
+    
+        return redirect()->route('etudiants.index')->with('success', 'Étudiant ajouté avec succès.');
     }
 
     /**
