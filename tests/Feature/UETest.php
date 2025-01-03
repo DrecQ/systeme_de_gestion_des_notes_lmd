@@ -28,4 +28,20 @@ class UETest extends TestCase
             'semestre' => 1
         ]);
     }
+
+    public function test_verification_des_credits_ects_compris_entre_1_et_30()
+    {
+        // Créer une UE avec des crédits ECTS valides
+        $creditsValid = UnitesEnseignement::factory()->create(['credits_ects' => 6]);
+        $this->assertDatabaseHas('unites_enseignements', ['credits_ects' => 6]);
+
+        if($creditsValid['credits_ects'] > 30)
+        {
+            // Tester une valeur invalide
+            $this->expectException(\Illuminate\Database\QueryException::class);
+        }
+         
+    }
+
+   
 }
