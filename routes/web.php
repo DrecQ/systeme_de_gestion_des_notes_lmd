@@ -34,6 +34,12 @@ Route::get('/ecu', function () {
     return view('formulaireCreationEcu');
 });
 
+Route::get('/listeECU', function () {
+    return view('listeECU');
+});
+
+Route::get('/listeECU', [ElementsConstitutifsController::class, 'index']);
+
 Route::post('/ecu', [ElementsConstitutifsController::class, 'store'])->name('insertionEcu.store');
 
 
@@ -41,4 +47,6 @@ Route::post('/ecu', [ElementsConstitutifsController::class, 'store'])->name('ins
 
 Route::get('/ecu/{ue}', [ElementsConstitutifsController::class, 'create'])->name('ue_id');
 Route::post('/ecu/{ue}', [ElementsConstitutifsController::class, 'store'])->name('insertionEcu.store');
+
+
 

@@ -10,8 +10,14 @@ class ElementsConstitutifsController extends Controller
 {
     public function index()
     {
-        return view('formulaireCreationEcu');
+        // $ues = UnitesEnseignement::with('elementsConstitutifs')->get();
+        // $ues = UnitesEnseignement::with('elementsConstitutifs')->orderBy('semestre', 'asc')->get();
+        $ues = UnitesEnseignement::with('elementsConstitutifs')->orderBy('semestre', 'asc')->get()->groupBy('semestre');
+        
+        return view('listeECU', compact('ues'));
     }
+    
+
 
     public function create($ue)
     {
@@ -27,7 +33,7 @@ class ElementsConstitutifsController extends Controller
         $validate = $request->validate([
             'code' => 'required|string|max:10|unique:elements_constitutifs',
             'nom' => 'required|string|max:255',
-            'coefficient' => 'required|numeric|max:10',
+            'coefficient' => 'required|integer|max:10',
             'ue_id' => 'required|exists:unites_enseignements,id'
         ]);
 
@@ -38,6 +44,31 @@ class ElementsConstitutifsController extends Controller
             'ue_id' => $validate['ue_id']
         ]);
 
-        return redirect()->route('ue.liste')->with('success', 'Élément constitutif ajouté avec succès.');
+        return redirect('/listeECU')->with('success', 'Élément constitutif ajouté avec succès.');
     }
+
+     /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(UnitesEnseignement $unitesEnseignement)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, UnitesEnseignement $unitesEnseignement)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(UnitesEnseignement $unitesEnseignement)
+    {
+        //
+    }
+
 }

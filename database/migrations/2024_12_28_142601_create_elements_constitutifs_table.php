@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->string('nom');
-            $table->integer('coefficient');
+            $table->integer('coefficient')->nullable();
             $table->foreignId('ue_id')->constrained('unites_enseignements')->onDelete('cascade');
             $table->timestamps();
         });

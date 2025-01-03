@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class ElementsConstitutifs extends Model
 {
-    protected $fillable = ['ue_id', 'code', 'nom', 'credits_ects'];
+    protected $fillable = ['ue_id', 'code', 'nom', 'coefficient'];
 
-    public function UnitesEnseignement()
+    public function unitesEnseignement()
     {
-        return $this->belongsTo(UnitesEnseignement::class);
+        return $this->belongsTo(UnitesEnseignement::class, 'ue_id');
     }
 }

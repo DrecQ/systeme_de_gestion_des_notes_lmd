@@ -13,8 +13,8 @@ class UnitesEnseignement extends Model
 
     protected $fillable = ['code', 'nom', 'credits_ects', 'semestre'];
 
-    public function ElementsConstitutifs()
+    public function elementsConstitutifs()
     {
-        return $this->hasMany(ElementsConstitutifs::class);
+        return $this->hasMany(ElementsConstitutifs::class, 'ue_id');
     }
 }
