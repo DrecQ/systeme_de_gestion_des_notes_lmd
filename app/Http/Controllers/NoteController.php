@@ -13,7 +13,8 @@ class NoteController extends Controller
      */
     public function index()
     {
-        //
+        $notes = Note::with(['etudiant', 'matiere'])->get(); 
+        return view('notes.index', compact('notes'));
     }
 
     /**

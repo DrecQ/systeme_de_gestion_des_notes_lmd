@@ -1,18 +1,19 @@
 <?php
 
 use Illuminate\Foundation\Application;
-use Illuminate\Foundation\Configuration\Exceptions;
-use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionsHandler;
+use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode as MaintenanceMiddleware;
 
-return Application::configure(basePath: dirname(__DIR__))
-    ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        commands: __DIR__.'/../routes/console.php',
-        health: '/up',
-    )
-    ->withMiddleware(function (Middleware $middleware) {
-        //
+return Application::make(basePath: dirname(__DIR__))
+    ->withRouting([
+        'web' => base_path('routes/web.php'),
+        'console' => base_path('routes/console.php'),
+    ])
+    ->withHealthCheck('/up')
+    ->withMiddleware(function ($middleware) {
+        $middleware->add(MaintenanceMiddleware::class);
     })
-    ->withExceptions(function (Exceptions $exceptions) {
-        //
-    })->create();
+    ->withExceptions(function ($exceptions) {
+        $exceptions->useHandler(ExceptionsHandler::class);
+    })
+    ->create();

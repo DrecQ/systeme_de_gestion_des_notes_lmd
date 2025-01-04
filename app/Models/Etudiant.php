@@ -33,5 +33,32 @@ class Etudiant extends Model
         $somme = $notes->sum(fn($note) => $note->note);
         return $somme / $notes->count();
     }
+    public function ues()
+    {
+        return $this->belongsToMany(UE::class)->withPivot('note');
+    }
+    public function getResults()
+    {
+        $results = [];
+        foreach ($this->ues as $ue) {
+            $total = 0;
+            $coefficients = 0;
+
+            foreach ($ue->ecs as $ec) {
+                $note = $ec->notes->where('etudiant_id', $this->id)->first()->note ?? 0;
+                $total += $note * $ec->coefficient;
+                $coefficients += $ec->coefficient;
+            }
+
+            $average = $coefficients > 0 ? $total / $coefficients : 0;
+            $results[] = [
+                'ue' => $ue->nom,
+                'average' => $average,
+                'validated' => $average >= 10, // Validation si moyenne >= 10
+            ];
+        }
+
+        return $results;
+    }
 
 }

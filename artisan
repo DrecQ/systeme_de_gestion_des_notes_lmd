@@ -2,14 +2,22 @@
 <?php
 
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Illuminate\Contracts\Console\Kernel;
 
 define('LARAVEL_START', microtime(true));
 
-// Register the Composer autoloader...
-require __DIR__.'/vendor/autoload.php';
+// Charger l'autoloader de Composer
+require __DIR__ . '/vendor/autoload.php';
 
-// Bootstrap Laravel and handle the command...
-$status = (require_once __DIR__.'/bootstrap/app.php')
-    ->handleCommand(new ArgvInput);
+// Charger l'application Laravel
+$app = require_once __DIR__ . '/bootstrap/app.php';
 
+// Résoudre l'instance de la console et exécuter la commande
+$status = $app->make(Kernel::class)->handle(
+    new ArgvInput(),
+    new ConsoleOutput()
+);
+
+// Quitter avec le statut de la commande
 exit($status);
