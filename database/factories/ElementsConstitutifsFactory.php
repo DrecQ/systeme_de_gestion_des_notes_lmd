@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\UnitesEnseignement;
+use App\Models\ElementsConstitutifs;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -15,15 +16,15 @@ class ElementsConstitutifsFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    protected $model = UnitesEnseignement::class;
+    protected $model = ElementsConstitutifs::class;
 
     public function definition(): array
     {
         return [
             'code' => 'UE'.$this->faker->unique()->numberBetween(001,999),
             'nom' => $this->faker->sentence(3),
-            'credits_ects' => $this->faker->numberBetween(1, 30),
-            'semestre' => $this->faker->numberBetween(1, 6)
+            'coefficient' => $this->faker->numberBetween(1, 5),
+            'ue_id' => UnitesEnseignement::factory()
         ];
     }
 }

@@ -12,16 +12,13 @@
             </h1>
 
             @foreach($uesParSemestre as $ue)
-            <div class="flex flex-col md:flex-row justify-between items-center mb-6 border-b pb-4">
-    <h2 class="text-2xl font-bold text-gray-700 mb-2 md:mb-0">
-        {{ $ue->nom }}
-    </h2>
-    <a href="" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded shadow-lg transition-transform transform hover:scale-105">
-        + Ajouter un ECU
-    </a>
-</div>
-
-
+                <div class="mt-6">
+                    <h2 class="text-2xl font-bold text-gray-700 mb-4 text-center">
+                        {{ $ue->nom }}
+                    </h2>
+                    <div class="text-center mb-8">
+                        <a href="" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Ajouter un ECU</a>
+                    </div>
 
                     <table class="min-w-full bg-white border text-center mb-8">
                         <thead>

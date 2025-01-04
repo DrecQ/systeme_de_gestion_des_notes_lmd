@@ -38,7 +38,7 @@ Route::get('/listeECU', function () {
     return view('listeECU');
 });
 
-Route::get('/listeECU', [ElementsConstitutifsController::class, 'index']);
+Route::get('/listeECU', [ElementsConstitutifsController::class, 'index'])->name('listeECU');
 
 Route::post('/ecu', [ElementsConstitutifsController::class, 'store'])->name('insertionEcu.store');
 
