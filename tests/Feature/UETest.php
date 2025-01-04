@@ -65,5 +65,16 @@ class UETest extends TestCase
     
     }
     
+    public function test_verification_du_semestre()
+    {
+        // UE avec un semestre valide
+        $ue = UnitesEnseignement::factory()->create(['semestre' => 1]);
+        $this->assertDatabaseHas('unites_enseignements', ['semestre' => 1]);
+
+        if($ue['semestre'] < 1 || $ue['semestre'] > 6)
+        {
+            $this->expectException(\Exception::class);
+        }
+    }
    
 }

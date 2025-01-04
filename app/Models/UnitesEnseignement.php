@@ -21,6 +21,9 @@ class UnitesEnseignement extends Model
             if (!preg_match('/^UE\d{2}$/', $ue->code)) {
                 throw new \Exception('Le code UE doit suivre le format UExx.');
             }
+            if ($ue->semestre < 1 || $ue->semestre > 6) {
+                throw new \Exception('Le semestre doit être compris entre 1 et 6.');
+            }
         });
     }
 
