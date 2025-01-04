@@ -36,8 +36,9 @@
                                     <td class="py-3 px-4">{{ $ec->code }}</td>
                                     <td class="py-3 px-4">{{ $ec->nom }}</td>
                                     <td class="py-3 px-4">{{ $ec->coefficient }}</td>
-                                    <td class="py-3 px-4">
-                                        <a href="" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Modifier</a>
+                                    <td class="py-3 px-6">
+                                    <a href="{{ route('elementsConstitutifs.edit', $ec->id) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">Modifier</a>
+                                    <a href="{{ route('elementsConstitutifs.destroy', $ec->id) }}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Supprimer</a>
                                     </td>
                                 </tr>
                             @empty
