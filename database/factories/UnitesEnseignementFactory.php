@@ -21,7 +21,7 @@ class UnitesEnseignementFactory extends Factory
     public function definition(): array
     {
         return [
-            'code' => 'UE'.$this->faker->unique()->numberBetween(001,999),
+            'code' => 'UE'.$this->faker->unique()->numberBetween(01,99),
             'nom' => $this->faker->sentence(3),
             'credits_ects' => $this->faker->numberBetween(1, 30),
             'semestre' => $this->faker->numberBetween(1, 6)

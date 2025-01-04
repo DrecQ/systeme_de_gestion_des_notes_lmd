@@ -57,5 +57,13 @@ class UETest extends TestCase
 
     }
 
+    public function test_validation_du_code_de_UE()
+    {
+        // Créer une UE avec un code valide
+        $ueValid = UnitesEnseignement::factory()->create(['code' => 'UE10']);
+        $this->assertDatabaseHas('unites_enseignements', ['code' => 'UE10']);
+    
+    }
+    
    
 }

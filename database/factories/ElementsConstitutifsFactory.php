@@ -21,7 +21,7 @@ class ElementsConstitutifsFactory extends Factory
     public function definition(): array
     {
         return [
-            'code' => 'UE'.$this->faker->unique()->numberBetween(001,999),
+            'code' => 'UE'.$this->faker->unique()->numberBetween(01,99),
             'nom' => $this->faker->sentence(3),
             'coefficient' => $this->faker->numberBetween(1, 5),
             'ue_id' => UnitesEnseignement::factory()
