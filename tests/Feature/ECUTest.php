@@ -30,4 +30,14 @@ class ECUTest extends TestCase
             'coefficient' => 3
         ]);
     }
+
+    public function test_verification_du_rattachement_d_un_ec_a_une_ue()
+    {
+        $ue = UnitesEnseignement::factory()->create();
+        $ec = ElementsConstitutifs::factory()->create(['ue_id' => $ue->id]);
+
+        $this->assertEquals($ue->id, $ec->ue_id);
+    }
+
+  
 }
