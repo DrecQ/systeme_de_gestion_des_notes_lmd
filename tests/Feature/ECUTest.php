@@ -39,5 +39,35 @@ class ECUTest extends TestCase
         $this->assertEquals($ue->id, $ec->ue_id);
     }
 
-  
+    public function test_modification_d_un_ec()
+    {
+        $ue = UnitesEnseignement::factory()->create(); 
+
+        $ec = ElementsConstitutifs::factory()->create([
+            'code' => 'UE20',
+            'nom' => 'Français',
+            'coefficient' => 2,
+            'ue_id' => $ue->id, 
+        ]);
+
+        // Modifier l'EC existant
+        $response = $this->put(route('elementsConstitutifs.update', $ec->id), [
+            'code' => 'UE20',
+            'nom' => 'Physique',
+            'coefficient' => 4,
+            'ue_id' => $ue->id, 
+        ]);
+
+        $response->assertRedirect(route('elementsConstitutifs.index'));
+
+        // Vérifier que les données modifiées sont bien enregistrées dans la base de données
+        $this->assertDatabaseHas('elements_constitutifs', [
+            'id' => $ec->id,
+            'code' => 'UE20',
+            'nom' => 'Physique',
+            'coefficient' => 4,
+            'ue_id' => $ue->id, 
+        ]);
+    }
+
 }
