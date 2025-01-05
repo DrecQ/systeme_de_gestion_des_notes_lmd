@@ -39,6 +39,8 @@ class ECUTest extends TestCase
         $this->assertEquals($ue->id, $ec->ue_id);
     }
 
+    use RefreshDatabase;
+
     public function test_modification_d_un_ec()
     {
         $ue = UnitesEnseignement::factory()->create(); 
@@ -67,6 +69,30 @@ class ECUTest extends TestCase
             'nom' => 'Physique',
             'coefficient' => 4,
             'ue_id' => $ue->id, 
+        ]);
+    }
+
+    use RefreshDatabase;
+    public function test_validation_du_coefficient_entre_1_et_5()
+    {
+        $ue = UnitesEnseignement::factory()->create();
+
+
+        $response = $this->post(route('elementsConstitutifs.store'), [
+            'code' => 'UE28',
+            'nom' => 'Mathématiques',
+            'coefficient' => 5,  
+            'ue_id' => $ue->id
+        ]);
+    
+        // Vérifier si la requête a été acceptée
+        $response->assertRedirect(route('elementsConstitutifs.index'));
+    
+        // Vérifier si l'EC a bien été créé dans la base de données
+        $this->assertDatabaseHas('elements_constitutifs', [
+            'code' => 'UE28',
+            'nom' => 'Mathématiques',
+            'coefficient' => 5
         ]);
     }
 
