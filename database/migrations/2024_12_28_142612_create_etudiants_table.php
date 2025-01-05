@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('etudiants', function (Blueprint $table) {
             $table->id();
-            $table->string('numero_etudiant')->unique(); // Numéro unique de l'étudiant
-            $table->string('nom'); // Nom de l'étudiant
-            $table->string('prenom'); // Prénom de l'étudiant
-            $table->enum('niveau', ['L1', 'L2', 'L3']); // Niveau (L1, L2, L3)
+            $table->string('numero_etudiant')->unique();
+            $table->string('nom');
+            $table->string('prenom');
+            $table->enum('niveau', ['L1', 'L2', 'L3']);
             $table->timestamps();
         });
     }

@@ -21,9 +21,9 @@ class NoteController extends Controller
      */
     public function create()
     {
-        $ecs = EC::all(); // Récupère tous les ECs
-        $etudiants = Etudiant::all(); // Récupère tous les étudiants
-        return view('notes.create', compact('ecs', 'etudiants'));
+        $etudiants = Etudiant::all();
+        $ecs = EC::all();
+        return view('notes.create', compact('etudiants', 'ecs'));
     }
 
     /**
@@ -36,12 +36,10 @@ class NoteController extends Controller
             'ec_id' => 'required|exists:elements_constitutifs,id',
             'note' => 'required|numeric|min:0|max:20',
             'session' => 'required|in:normale,rattrapage',
-            'date_evaluation' => 'required|date',
         ]);
     
         Note::create($request->all());
-    
-        return redirect()->route('notes.create')->with('success', 'Note ajoutée avec succès.');
+        return redirect()->route('notes.create')->with('success', 'Note enregistrée avec succès');
     }
 
     /**

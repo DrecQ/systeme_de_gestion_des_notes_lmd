@@ -8,67 +8,108 @@ use Tests\TestCase;
 
 class NoteTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
-    public function test_example(): void
-    {
-        $response = $this->get('/');
+   use RefreshDatabase;
+   
+   public function test_ajout_note_valide()
+   {
+       $etudiant = Etudiant::factory()->create();
+       $ec = EC::factory()->create();
+   
+       $response = $this->post(route('notes.store'), [
+           'etudiant_id' => $etudiant->id,
+           'ec_id' => $ec->id,
+           'note' => 15,
+           'session' => 'normale',
+       ]);
+   
+       $response->assertRedirect(route('notes.create')); // Vérifie la redirection
+       $this->assertDatabaseHas('notes', [
+           'etudiant_id' => $etudiant->id,
+           'ec_id' => $ec->id,
+           'note' => 15,
+           'session' => 'normale',
+       ]);
+   }
 
-        $response->assertStatus(200);
-    }
-
-    public function testStoreNote()
+   public function test_note_hors_limites()
     {
         $etudiant = Etudiant::factory()->create();
         $ec = EC::factory()->create();
-    
-        $response = $this->post('/notes',[
-            'etudiant_id' => $etudiant->id,
-            'ec_id' => $ec->id,
-            'note' => 15,
-            'session' => 'normale',
-            'date_evaluation' => now()->toDateString(),
-        ]);
-    
-        $response->assertStatus(201);
-        $this->assertDatabaseHas('notes', [
-            'etudiant_id' => $etudiant->id,
-            'ec_id' => $ec->id,
-            'note' => 15,
-        ]);
-    }
 
-    public function testValidationNote()
-    {
-        $response = $this->post('/notes', ['note' => 21]);
+        // Note inférieure à 0
+        $response = $this->post(route('notes.store'), [
+            'etudiant_id' => $etudiant->id,
+            'ec_id' => $ec->id,
+            'note' => -1,
+            'session' => 'normale',
+        ]);
+        $response->assertSessionHasErrors('note');
+
+        // Note supérieure à 20
+        $response = $this->post(route('notes.store'), [
+            'etudiant_id' => $etudiant->id,
+            'ec_id' => $ec->id,
+            'note' => 21,
+            'session' => 'normale',
+        ]);
         $response->assertSessionHasErrors('note');
     }
 
-    public function testCalculMoyenneUE()
+    public function test_gestion_des_sessions()
+    {
+        $etudiant = Etudiant::factory()->create();
+        $ec = EC::factory()->create();
+
+        // Note en session normale
+        Note::factory()->create([
+            'ec_id' => $ec->id,
+            'etudiant_id' => $etudiant->id,
+            'note' => 8,
+            'session' => 'normale',
+        ]);
+
+        // Note en session de rattrapage
+        Note::factory()->create([
+            'ec_id' => $ec->id,
+            'etudiant_id' => $etudiant->id,
+            'note' => 12,
+            'session' => 'rattrapage',
+        ]);
+
+        $noteRattrapage = Note::where('session', 'rattrapage')->where('etudiant_id', $etudiant->id)->first();
+        $this->assertEquals(12, $noteRattrapage->note);
+    }
+
+    public function test_calcul_moyenne_ue()
     {
         $ue = UE::factory()->create();
+        $etudiant = Etudiant::factory()->create();
+
         $ec1 = EC::factory()->create(['ue_id' => $ue->id, 'coefficient' => 2]);
         $ec2 = EC::factory()->create(['ue_id' => $ue->id, 'coefficient' => 3]);
-    
-        Note::factory()->create(['ec_id' => $ec1->id, 'note' => 14]);
-        Note::factory()->create(['ec_id' => $ec2->id, 'note' => 16]);
-    
-        $moyenne = $ue->calculerMoyenne(); // Implémenter une méthode calculerMoyenne dans le modèle UE
-    
-        $this->assertEquals(15.2, $moyenne);
+
+        Note::factory()->create(['ec_id' => $ec1->id, 'etudiant_id' => $etudiant->id, 'note' => 12]);
+        Note::factory()->create(['ec_id' => $ec2->id, 'etudiant_id' => $etudiant->id, 'note' => 16]);
+
+        $moyenne = $ue->calculerMoyenne($etudiant->id);
+
+        $this->assertEquals(14.4, $moyenne); // (12*2 + 16*3) / (2+3) = 14.4
     }
 
-    public function testGestionSessions()
+    public function test_validation_notes_manquantes()
     {
-        $note = Note::factory()->create(['session' => 'normale']);
-    
-        $this->assertEquals('normale', $note->session);
-    }
+        $ue = UE::factory()->create();
+        $etudiant = Etudiant::factory()->create();
 
-    public function testValidationNotesManquantes()
-    {
-        $response = $this->post('/notes', ['note' => null]);
-        $response->assertSessionHasErrors('note');
+        $ec1 = EC::factory()->create(['ue_id' => $ue->id, 'coefficient' => 2]);
+        $ec2 = EC::factory()->create(['ue_id' => $ue->id, 'coefficient' => 3]);
+
+        // Une seule note présente
+        Note::factory()->create(['ec_id' => $ec1->id, 'etudiant_id' => $etudiant->id, 'note' => 10]);
+
+        $moyenne = $ue->calculerMoyenne($etudiant->id);
+
+        // La moyenne ne peut pas être calculée (car il manque une note)
+        $this->assertNull($moyenne);
     }
 }

@@ -14,4 +14,21 @@ class UnitesEnseignement extends Model
     {
         return $this->hasMany(ElementsConstitutifs::class);
     }
+
+    public function calculerMoyenne($etudiantId)
+    {
+        $ecs = $this->elementsConstitutifs;
+        $totalNotes = 0;
+        $totalCoefficients = 0;
+
+        foreach ($ecs as $ec) {
+            $note = $ec->notes()->where('etudiant_id', $etudiantId)->first();
+            if ($note) {
+                $totalNotes += $note->note * $ec->coefficient;
+                $totalCoefficients += $ec->coefficient;
+            }
+        }
+
+        return $totalCoefficients > 0 ? $totalNotes / $totalCoefficients : null;
+    }
 }
