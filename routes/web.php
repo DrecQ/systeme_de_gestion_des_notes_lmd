@@ -3,12 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\UnitesEnseignement;
 use App\Models\ElementsConstitutifs;
+use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\EtudiantController;
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\UnitesEnseignementController;
 use App\Http\Controllers\ElementsConstitutifsController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
 //------------ Routes pour les UEs ------------------------
 
@@ -16,17 +18,25 @@ Route::get('/ue', function () {
     return view('formulaireCreationUe');
 });
 
+//Affichage du formulaire des etudiants
+Route::get('/etudiant', [EtudiantController::class, 'index'])->name('etudiant');
+
+//Affichage du formulaire des notes
+Route::get('/note', [NoteController::class, 'index'])->name('note');
+
+
 // Affichage des UEs
 Route::get('/listeUE', [UnitesEnseignementController::class, 'all'])->name('ue_id');
 
 // Insertion d'une nouvelle UE
 Route::post('/ue', [UnitesEnseignementController::class, 'store'])->name('insertionUe.store');
 
-//---------- Routes pour les ECUs ------------------------
+//---------- Routes pour les ECs ------------------------
 
 Route::get('/ec', function () {
     return view('formulaireCreationEcu');
 });
+
 
 // Affichage des ECUs
 Route::get('/listeEC', [ElementsConstitutifsController::class, 'index'])->name('listeECU');

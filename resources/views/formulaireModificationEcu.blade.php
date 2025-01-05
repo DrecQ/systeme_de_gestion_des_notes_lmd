@@ -3,8 +3,16 @@
 </header>
 
 <body>
-    
-<div class="max-w-xl mx-auto mt-12 bg-gray p-8 rounded-lg shadow-lg">
+ <!-- Menu Principal -->
+ <nav class="bg-white shadow-md">
+        <div class="max-w-6xl mx-auto flex justify-between items-center h-16 px-4">
+            
+            <!-- Logo -->
+            <a href="{{route('welcome')}}" class="text-xl font-bold text-blue-600">Retour</a>
+        </div>
+    </nav>
+
+<div class="max-w-xl mx-auto mt-8 bg-gray p-4 rounded-lg shadow-lg">
 <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Modification ECUs</h1>
 <form action="{{ route('elementsConstitutifs.update', $elementConstitutif->id) }}" method="POST">
     @csrf
