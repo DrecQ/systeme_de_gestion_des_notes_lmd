@@ -17,7 +17,7 @@ Route::get('/ue', function () {
 });
 
 // Affichage des UEs
-Route::get('/listeUE', [UnitesEnseignementController::class, 'all'])->name('ue.liste');
+Route::get('/listeUE', [UnitesEnseignementController::class, 'all'])->name('ue_id');
 
 // Insertion d'une nouvelle UE
 Route::post('/ue', [UnitesEnseignementController::class, 'store'])->name('insertionUe.store');
@@ -33,13 +33,12 @@ Route::get('/listeECU', [ElementsConstitutifsController::class, 'index'])->name(
 
 // Affichage du formulaire de création d'un ECU pour une UE spécifique
 Route::get('/ecu/{ue}', [ElementsConstitutifsController::class, 'create'])->name('elementsConstitutifs.create');
-
 // Insertion d'un ECU pour une UE spécifique
 Route::post('/ecu/{ue}', [ElementsConstitutifsController::class, 'store'])->name('insertionEcu.store');
 
 // Affichage du formulaire de modification d'un ECU
-Route::post('/elements-constitutifs', [ElementsConstitutifsController::class, 'store'])->name('elementsConstitutifs.store');
 Route::get('/ecu/{id}/edit', [ElementsConstitutifsController::class, 'edit'])->name('elementsConstitutifs.edit');
+Route::post('/elements-constitutifs', [ElementsConstitutifsController::class, 'store'])->name('elementsConstitutifs.store');
 
 // Mise à jour d'un ECU
 Route::get('/elementsConstitutifs', [ElementsConstitutifsController::class, 'index'])->name('elementsConstitutifs.index');

@@ -5,16 +5,29 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\UnitesEnseignement;
+use App\Models\ElementsConstitutifs;
 
 class ECUTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
-    public function test_example(): void
+    use RefreshDatabase;
+   
+    public function test_creation_ecu_avec_coefficient()
     {
-        $response = $this->get('/');
+        $ue = UnitesEnseignement::factory()->create();
 
-        $response->assertStatus(200);
+        $response = $this->post(route('elementsConstitutifs.store'), [
+            'ue_id' => $ue->id,
+            'code' => 'EC10',
+            'nom' => 'Analyse',
+            'coefficient' => 3
+        ]);
+
+        $response->assertRedirect(route('elementsConstitutifs.index'));
+        $this->assertDatabaseHas('elements_constitutifs', [
+            'code' => 'EC10',
+            'nom' => 'Analyse',
+            'coefficient' => 3
+        ]);
     }
 }

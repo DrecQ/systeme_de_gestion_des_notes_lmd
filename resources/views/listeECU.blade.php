@@ -17,7 +17,7 @@
                         {{ $ue->nom }}
                     </h2>
                     <div class="text-center mb-8">
-                        <a href="" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Ajouter un ECU</a>
+                        <a href="{{ route('insertionEcu.store', ['ue' => $ue->id]) }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Ajouter une Ecu</a>
                     </div>
 
                     <table class="min-w-full bg-white border text-center mb-8">
