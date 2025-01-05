@@ -12,7 +12,7 @@ class ECUTest extends TestCase
 {
     use RefreshDatabase;
    
-    public function test_creation_ecu_avec_coefficient()
+    public function test_creation_ec_avec_coefficient()
     {
         $ue = UnitesEnseignement::factory()->create();
 
