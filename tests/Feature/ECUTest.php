@@ -96,4 +96,40 @@ class ECUTest extends TestCase
         ]);
     }
 
+    public function test_suppression_d_un_ec()
+    {
+    $ue = UnitesEnseignement::factory()->create();
+
+    // Creation d'un EC
+    $ec = ElementsConstitutifs::factory()->create([
+        'code' => 'UE21',
+        'nom' => 'Mathématiques',
+        'coefficient' => 4,
+        'ue_id' => $ue->id,
+    ]);
+
+    // Vérifier que l'EC existe avant la suppression
+    $this->assertDatabaseHas('elements_constitutifs', [
+        'id' => $ec->id,
+        'code' => 'UE21',
+        'nom' => 'Mathématiques',
+        'coefficient' => 4,
+    ]);
+
+    // Effectuer une requête de suppression
+    $response = $this->delete(route('elementsConstitutifs.destroy', $ec->id));
+
+    // Vérifier que la requête a entraîné une redirection vers la page d'index
+    $response->assertRedirect(route('elementsConstitutifs.index'));
+
+    // Vérifier que l'EC a bien été supprimé de la base de données
+    $this->assertDatabaseMissing('elements_constitutifs', [
+        'id' => $ec->id,
+        'code' => 'UE21',
+        'nom' => 'Mathématiques',
+        'coefficient' => 4,
+    ]);
+    }
+
+
 }
